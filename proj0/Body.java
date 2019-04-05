@@ -1,10 +1,10 @@
 public class Body{
-  double xxPos;
-  double yyPos;
-  double xxVel;
-  double yyVel;
-  double mass;
-  String imgFileName;
+  public double xxPos;
+  public double yyPos;
+  public double xxVel;
+  public double yyVel;
+  public double mass;
+  public String imgFileName;
   public static final double G = 6.67E-11;
 
   public Body(double xP, double yP, double xV,

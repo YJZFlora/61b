@@ -52,7 +52,7 @@ public class NBody{
           bodies[i].xxPos, bodies[i].yyPos, bodies[i].xxVel,
           bodies[i].yyVel, bodies[i].mass, bodies[i].imgFileName);
       }
-      
+
     } catch (Exception ex){
       ex.printStackTrace();;
     }
@@ -74,12 +74,12 @@ public class NBody{
     int planetNumber = in.readInt();
     Body[] bodyArray = new Body[planetNumber];
     in.readDouble();
-    double xxPos;
-    double yyPos;
-    double xxVel;
-    double yyVel;
-    double mass;
-    String img;
+    private double xxPos;
+    private double yyPos;
+    private double xxVel;
+    private double yyVel;
+    private double mass;
+    private String img;
     for(int i=0; i<planetNumber;i++){
       xxPos = in.readDouble();
       yyPos = in.readDouble();
