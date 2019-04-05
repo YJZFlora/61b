@@ -5,7 +5,7 @@ public class Body{
   public double yyVel;
   public double mass;
   public String imgFileName;
-  public static final double G = 6.67E-11;
+  private static final double G = 6.67E-11;
 
   public Body(double xP, double yP, double xV,
               double yV, double m, String img){
@@ -18,13 +18,12 @@ public class Body{
   }
 
   public Body(Body b){
-    Body bCopy = b;
-    xxPos = 1.0;
-    yyPos = 2.0;
-    xxVel = 3.0;
-    yyVel = 4.0;
-    mass = 5.0;
-    imgFileName = "jupiter.gif";
+    xxPos = b.xxPos;
+    yyPos = b.yyPos;
+    xxVel = b.xxVel;
+    yyVel = b.yyVel;
+    mass = b.mass;
+    imgFileName = b.imgFileName;
   }
 
   public double calcDistance(Body b){
