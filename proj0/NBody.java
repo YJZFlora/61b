@@ -74,12 +74,12 @@ public class NBody{
     int planetNumber = in.readInt();
     Body[] bodyArray = new Body[planetNumber];
     in.readDouble();
-    private double xxPos;
-    private double yyPos;
-    private double xxVel;
-    private double yyVel;
-    private double mass;
-    private String img;
+     double xxPos;
+     double yyPos;
+     double xxVel;
+     double yyVel;
+     double mass;
+     String img;
     for(int i=0; i<planetNumber;i++){
       xxPos = in.readDouble();
       yyPos = in.readDouble();
