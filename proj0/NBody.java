@@ -9,13 +9,9 @@ public class NBody{
       double radius = readRadius(filename);
       Body[] bodies = readBodies(filename);
 
-      StdDraw.enableDoubleBuffering();
 
       // paint canvas //
       StdDraw.setScale(-radius, radius);
-      StdDraw.picture(0, 0, "/images/starfield.jpg");
-
-      StdDraw.show();
 
       // paint bodies one by one //
       for(int i = 0; i < bodies.length; i++){
@@ -24,6 +20,8 @@ public class NBody{
       }
 
       // animation //
+      StdDraw.enableDoubleBuffering();
+
         for(int time=0; time < T;){ // refresh each millisecond to make animation //
           StdDraw.clear();
           double[] xForces = new double[bodies.length];
@@ -35,7 +33,7 @@ public class NBody{
           for(int i = 0; i < bodies.length; i++){ // calculate force for each body //
             bodies[i].update(dt, xForces[i], yForces[i]);
           }
-          StdDraw.picture(radius/2, radius/2, "/images/starfield.jpg");
+          StdDraw.picture(0, 0, "/images/starfield.jpg");
 
           for(int i = 0; i < bodies.length; i++){
             bodies[i].draw();
@@ -47,7 +45,14 @@ public class NBody{
 
       }
 
-
+      StdOut.printf("%d\n", bodies.length);
+      StdOut.printf("%.2e\n", radius);
+      for (int i = 0; i < bodies.length; i++) {
+          StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+          bodies[i].xxPos, bodies[i].yyPos, bodies[i].xxVel,
+          bodies[i].yyVel, bodies[i].mass, bodies[i].imgFileName);
+      }
+      
     } catch (Exception ex){
       ex.printStackTrace();;
     }
