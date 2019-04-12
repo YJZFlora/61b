@@ -4,3 +4,5 @@ public class Flik {
         return a == b;
     }
 }
+
+/** bug: for unknown reason, the Flik.java will fail when the Integer is 128 */
