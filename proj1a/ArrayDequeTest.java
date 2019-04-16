@@ -1,7 +1,7 @@
-import org.junit.Test;
-import static org.junit.Assert.*;
+
 
 public class ArrayDequeTest {
+
     public static void testAddAndSize() {
         ArrayDeque<Integer> a1 = new ArrayDeque<>();
         a1.addFirst(4);

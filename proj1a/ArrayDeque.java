@@ -21,7 +21,7 @@ public class ArrayDeque<T> {
         return false;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -52,11 +52,11 @@ public class ArrayDeque<T> {
         size += 1;
     }
 
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, nextFirst+1, a, 0, (size-nextLast));
+        System.arraycopy(items, nextFirst + 1, a, 0, (size - nextLast));
 
-        for (int i = 0; i < nextLast; i++){
+        for (int i = 0; i < nextLast; i++) {
             a[size - nextLast + i] = items[i];
         }
         items = a;
@@ -66,6 +66,9 @@ public class ArrayDeque<T> {
 
 
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         manageMemory();
         nextFirst = moveCursor(nextFirst, 1);
         size = size - 1;
@@ -74,6 +77,9 @@ public class ArrayDeque<T> {
 
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         manageMemory();
         nextLast = moveCursor(nextLast, -1);
         size = size - 1;
@@ -84,7 +90,7 @@ public class ArrayDeque<T> {
         for (int i = 0; i < size(); i++) {
             System.out.print(get(i) + " ");
         }
-       System.out.println();
+        System.out.println();
     }
 
     private int moveCursor(int cursor, int direction) {
@@ -92,20 +98,22 @@ public class ArrayDeque<T> {
         if (cursor == -1) {
             cursor = items.length - 1;
         }
-        if(cursor >= items.length) {
+        if (cursor >= items.length) {
             cursor = cursor - items.length;
         }
         return cursor;
     }
 
-    private void manageMemory(){
-        double R = (double)size / (double)items.length;
-        if(R < 0.25) {
-            resize(items.length / 2);
+    private void manageMemory() {
+        double R = (double) size / (double) items.length;
+        if (items.length > 15) {
+            if (R < 0.25) {
+                resize(items.length / 2);
+            }
         }
     }
 
-    public ArrayDeque(ArrayDeque<T> other) {
+    public ArrayDeque(ArrayDeque other) {
         items = (T[]) new Object[other.items.length];
         size = other.size;
         nextFirst = other.nextFirst;
