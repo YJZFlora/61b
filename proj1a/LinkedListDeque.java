@@ -46,7 +46,9 @@ public class LinkedListDeque<T> {
     public void addLast(T i) {
         Node curr = new Node(i);
         sentinel.prev.next = curr;
+        curr.prev = sentinel.prev;
         sentinel.prev = curr;
+        curr.next = sentinel;
         size = size + 1;
     }
 
