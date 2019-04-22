@@ -8,9 +8,9 @@ public class TestOffByN {
 
     @Test
     public void testequalChars() {
-        assertTrue(zero.equalChars('a','a'));
-        assertTrue(one.equalChars('a','b'));
-        assertTrue(three.equalChars('a','d'));
+        assertTrue(zero.equalChars('a', 'a'));
+        assertTrue(one.equalChars('a', 'b'));
+        assertTrue(three.equalChars('a', 'd'));
     }
 
 }

@@ -43,7 +43,7 @@ public class Palindrome extends LinkedListDeque {
         Object last = d.removeLast();
         String d2 = dequeToWord(d);
 
-        while (cc.equalChars((char)head, (char)last)) {
+        while (cc.equalChars((char) head, (char) last)) {
             return isPalindrome(d2, cc);
         }
 
