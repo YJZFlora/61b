@@ -15,8 +15,8 @@ public class BasicInDemo {
 		String fourthItemInFile = in.readString();
 		double fifthItemInFile = in.readDouble();
 
-		System.out.println("The file contained "  + firstItemInFile + ", " + 
+		System.out.println("The file contained "  + firstItemInFile + ", " +
 			               secondItemInFile + ", " + thirdItemInFile + ", " +
 			               fourthItemInFile + ", and " + fifthItemInFile);
 	}
-} 
+}

@@ -45,6 +45,30 @@ public class ArrayDequeTest {
         ArrayDeque<Integer> b2 = new ArrayDeque<>(a1);
         b2.printDeque(); // { 4, 15}
 
+        ArrayDeque<Integer> c = new ArrayDeque<>();
+        c.addFirst(0);
+        c.addFirst(1);
+        c.addLast(2);
+        c.addFirst(3);
+        c.addFirst(4);
+        c.addFirst(5);
+        c.removeLast();
+        c.addLast(7);
+        c.addLast(8);
+        c.addFirst(9);
+        c.addLast(10);
+        c.removeFirst();
+        c.addLast(12);
+        c.removeLast();
+        c.removeLast();
+        c.get(6); //8
+        c.get(0); //5
+        c.removeFirst();     //==> 5
+        c.removeLast();    //==> 8
+        c.removeFirst();     //==> 4
+        c.removeFirst() ;    //==> 3
+        c.removeLast(); //7
+
     }
 
 
