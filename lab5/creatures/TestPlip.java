@@ -32,10 +32,18 @@ public class TestPlip {
 
     @Test
     public void testReplicate() {
-        // TODO
+
+        Plip p = new Plip(2);
+        Plip p2 = p.replicate();
+
+        // When a Plip replicates, it keeps 50% of its energy. The other 50% goes to its offspring
+        assertEquals(1, p2.energy(), 0.01);
+        assertEquals(1, p.energy(), 0.01);
+        // check that the returned Plip is not the same Plip as the Plip whose replicate() method was called.
+        assertNotSame(p2, p);
     }
 
-    //@Test
+    @Test
     public void testChoose() {
 
         // No empty adjacent spaces; stay.
