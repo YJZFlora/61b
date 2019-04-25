@@ -33,7 +33,7 @@ public class Plip extends huglife.Creature {
     public Plip(double e) {
         super("plip");
         r = 99;
-        g = (int) Math.round(96*e+63);
+        g = (int) Math.round(96 * e + 63);
         b = 76;
         energy = e;
     }
@@ -54,7 +54,7 @@ public class Plip extends huglife.Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        g = (int) Math.round(96*energy+63);
+        g = (int) Math.round(96 * energy + 63);
         return color(r, g, b);
     }
 
@@ -119,7 +119,7 @@ public class Plip extends huglife.Creature {
         boolean anyClorus = false;
         Deque<Direction> clorusNeighbors = new ArrayDeque<>();
 
-        for (Map.Entry<huglife.Direction, huglife.Occupant> entry: neighbors.entrySet() ) {
+        for (Map.Entry<huglife.Direction, huglife.Occupant> entry: neighbors.entrySet()) {
             if (entry.getValue().name().equals("empty")) {
                 emptyNeighbors.addFirst(entry.getKey());
             }
@@ -134,7 +134,7 @@ public class Plip extends huglife.Creature {
         }
 
         // Rule 1
-        if (emptyNeighbors.size() == 0 ) {
+        if (emptyNeighbors.size() == 0) {
             return new Action(Action.ActionType.STAY);
         }
 

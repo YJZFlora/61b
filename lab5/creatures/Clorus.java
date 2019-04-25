@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
 
-public class Clorus extends huglife.Creature {
+public class Clorus extends Creature {
     private int r;
     private int g;
     private int b;
@@ -20,7 +20,9 @@ public class Clorus extends huglife.Creature {
         energy = e;
     }
 
-    public Clorus() {this(5);}
+    public Clorus() {
+        this(5);
+    }
 
     public Color color() {
         return color(r, g, b);
@@ -58,7 +60,7 @@ public class Clorus extends huglife.Creature {
 
         boolean anyPlips = false;
 
-        for (Map.Entry<huglife.Direction, huglife.Occupant> entry: neighbors.entrySet() ) {
+        for (Map.Entry<huglife.Direction, huglife.Occupant> entry: neighbors.entrySet()) {
             if (entry.getValue().name().equals("empty")) {
                 emptyNeighbors.addFirst(entry.getKey());
             }
@@ -67,7 +69,7 @@ public class Clorus extends huglife.Creature {
             }
         }
         // Rule 1
-        if (emptyNeighbors.size() == 0 ) {
+        if (emptyNeighbors.size() == 0) {
             return new Action(Action.ActionType.STAY);
         }
 
