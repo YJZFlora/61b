@@ -21,7 +21,7 @@ public class Clorus extends Creature {
     }
 
     public Clorus() {
-        this(5);
+        this(1);
     }
 
     public Color color() {
