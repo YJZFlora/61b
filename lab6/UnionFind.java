@@ -55,22 +55,22 @@ public class UnionFind {
        vertex with itself or vertices that are already connected should not 
        change the sets but may alter the internal structure of the data. */
     public void union(int v1, int v2) {
-
         if (find(v1) == find(v2)) {
             return;
         }
-        int bigger = v1;
-        int smaller = v2;
+        int bigger = v2;
+        int smaller = v1;
 
-        if (sizeOf(v1) <= sizeOf(v2)) {
-            bigger = v2;
-            smaller = v1;
+        if (sizeOf(v1) > sizeOf(v2)) {
+            bigger = v1;
+            smaller = v2;
         }
         int broot = find(bigger);
         int sroot = find(smaller);
 
-        parent[sroot] = broot;
         size[broot] += sizeOf(sroot);
+        parent[sroot] = broot;
+
         count--;
     }
 
