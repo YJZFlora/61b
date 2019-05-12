@@ -9,7 +9,7 @@ public class UnionFind {
     public UnionFind(int n) {
         parent = new int[n];
         size = new int[n];
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             parent[i] = n;
             size[i] = 1;
         }
@@ -19,7 +19,7 @@ public class UnionFind {
     /* Throws an exception if v1 is not a valid index. */
     private void validate(int vertex) {
         int n = parent.length;
-        if(vertex >= n || vertex < 0) {
+        if (vertex >= n || vertex < 0) {
             throw new IllegalArgumentException("illegal vertex");
         }
     }
@@ -56,30 +56,30 @@ public class UnionFind {
        change the sets but may alter the internal structure of the data. */
     public void union(int v1, int v2) {
 
-        if(find(v1) == find(v2)) {
+        if (find(v1) == find(v2)) {
             return;
         }
         int bigger = v1;
         int smaller = v2;
 
-        if (sizeOf(v1) <= sizeOf(v2)){
+        if (sizeOf(v1) <= sizeOf(v2)) {
             bigger = v2;
             smaller = v1;
         }
-        int Broot = find(bigger);
-        int Sroot = find(smaller);
+        int broot = find(bigger);
+        int sroot = find(smaller);
 
-        parent[Sroot] = Broot;
-        size[Broot] += sizeOf(Sroot);
-        count --;
+        parent[sroot] = broot;
+        size[broot] += sizeOf(sroot);
+        count--;
     }
 
     /* Returns the root of the set V belongs to. Path-compression is employed
        allowing for fast search-time. */
     public int find(int vertex) {
         validate(vertex);
-        int root = vertex
-        while(root != parent[root]) {
+        int root = vertex;
+        while (root != parent[root]) {
             root = parent[root];
         }
         while (root != parent[vertex]) {
