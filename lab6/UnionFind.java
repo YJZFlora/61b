@@ -10,7 +10,7 @@ public class UnionFind {
         parent = new int[n];
         size = new int[n];
         for (int i = 0; i < n; i++) {
-            parent[i] = n;
+            parent[i] = i;
             size[i] = 1;
         }
         count = n;
