@@ -11,7 +11,7 @@ public class TestBSTMapExtra {
     */
     @Test
     public void sanityKeySetTest() {
-    	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
+    	BSTMap<String, Integer> b = new BSTMap<>();
         HashSet<String> values = new HashSet<String>();
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1);
@@ -83,6 +83,7 @@ public class TestBSTMapExtra {
     *  when the node has only 1 or 0 children on either side. */
     @Test
     public void testRemoveRootEdge() {
+
         BSTMap rightChild = new BSTMap();
         rightChild.put('A', 1);
         rightChild.put('B', 2);
