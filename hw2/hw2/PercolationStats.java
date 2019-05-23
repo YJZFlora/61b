@@ -1,15 +1,19 @@
 package hw2;
 
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    double[] xt;
-    double mean;
-    double std;
+    private double[] xt;
+    private double mean;
+    private double std;
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
         xt = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation per = pf.make(N);
@@ -28,21 +32,13 @@ public class PercolationStats {
 
     // sample mean of percolation threshold
     public double mean() {
-        double sumofxt = 0.0;
-        for (int i = 0; i < xt.length; i++) {
-            sumofxt = sumofxt + xt[i];
-        }
-        mean = sumofxt / xt.length;
+        mean = StdStats.mean(xt);
         return mean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        double sum = 0.0;
-        for (int i = 0; i < xt.length; i++) {
-            sum = sum + Math.pow((xt[i] - mean), 2);
-        }
-        std = Math.sqrt(sum / (double) (xt.length - 1));
+        std = StdStats.stddev(xt);
         return std;
     }
 

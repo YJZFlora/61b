@@ -3,12 +3,13 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    int count;
-    int[][] grid;
-    WeightedQuickUnionUF uf;
-    int VT;
-    int VB;
-    int length;
+    private int count;
+    private int[][] grid;
+    private WeightedQuickUnionUF uf;
+    private WeightedQuickUnionUF uf2;
+    private int VT;
+    private int VB;
+    private int length;
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
@@ -17,15 +18,17 @@ public class Percolation {
         }
 
         grid = new int[N][N];
-        uf = new WeightedQuickUnionUF(N * N + 3);
+        uf = new WeightedQuickUnionUF(N * N + 2);
+        uf2 = new WeightedQuickUnionUF(N * N + 1);
         count = 0;
-        VT = N * N + 1;
-        VB = N * N + 2;
+        VT = N * N;
+        VB = N * N + 1;
         length = N;
         // union top row to VT, union top bottom to VB
         for (int i = 0; i < N; i++) {
             int n = to1dNumber(0, i);
             uf.union(n, VT);
+            uf2.union(n, VT);
             int m = to1dNumber(N - 1, i);
             uf.union(m, VB);
         }
@@ -52,18 +55,22 @@ public class Percolation {
         if (row != 0 && isOpen(row - 1, col)) {
             int up = target - length;
             uf.union(up, target);
+            uf2.union(up, target);
         }
         if (row != length - 1 && isOpen(row + 1, col)) {
             int down = target + length;
             uf.union(down, target);
+            uf2.union(down, target);
         }
         if (col != 0 && isOpen(row, col - 1)) {
             int right = target - 1;
             uf.union(right, target);
+            uf2.union(right, target);
         }
         if (col != length - 1 && isOpen(row, col + 1)) {
             int left = target + 1;
             uf.union(left, target);
+            uf2.union(left, target);
         }
     }
 
@@ -81,7 +88,7 @@ public class Percolation {
             throw new IndexOutOfBoundsException();
         }
         int oned = to1dNumber(row, col);
-        if (grid[row][col] == 1 && uf.connected(oned, VT)) {
+        if (grid[row][col] == 1 && uf2.connected(oned, VT)) {
             return true;
         }
         return false;
@@ -94,7 +101,11 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return uf.connected(VT, VB);
+        if (length == 1) {
+            return isOpen(0, 0);
+        } else {
+            return uf.connected(VT, VB);
+        }
     }
 
 
