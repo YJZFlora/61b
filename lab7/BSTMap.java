@@ -1,6 +1,4 @@
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
@@ -143,7 +141,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         return;
     }
 
-    // TODO
+
     /* Removes the mapping for the specified key from this map if present.
      * Not required for Lab 8. If you don't implement this, throw an
      * UnsupportedOperationException. */
@@ -199,7 +197,66 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException("no");
+        return new BSTMiterator();
     }
+
+    private class BSTMiterator implements Iterator<K> {
+        private int count;
+        Queue ll = keys(min(root).key, max(root).key);
+
+        public BSTMiterator() {
+            count = root.size;
+        }
+        public boolean hasNext() {
+            return count != 0;
+        }
+        public K next() {
+           K returnK = (K) ll.remove();
+           count -= 1;
+           return returnK;
+        }
+    }
+
+    private Node max(Node x) {
+        if (x.right == null) {
+            return x;
+        } else {
+            return max(x.right);
+        }
+    }
+
+    public Iterable<K> keys() {
+        if (root.size == 0) {
+            return new LinkedList<K>();
+        }
+        return keys(min(root).key, max(root).key);
+    }
+
+    public Queue<K> keys(K lo, K hi) {
+        if (lo == null) throw new IllegalArgumentException("first argument to keys() is null");
+        if (hi == null) throw new IllegalArgumentException("second argument to keys() is null");
+
+        Queue<K> ll = new LinkedList<K>();
+        keys(ll, lo, hi, root);
+        return ll;
+    }
+
+    private void keys(Queue queue, K lo, K hi, Node x) {
+        if (x == null) {
+            return;
+        }
+        int cmplo = lo.compareTo(x.key);
+        int cmphi = hi.compareTo(x.key);
+        if (cmplo < 0) {
+            keys(queue, lo, hi, x.left);
+        }
+        if (cmplo <= 0 && cmphi >= 0) {
+            queue.add(x.key);
+        }
+        if (cmphi > 0) {
+            keys(queue, lo, hi, x.right);
+        }
+    }
+
 
 }
