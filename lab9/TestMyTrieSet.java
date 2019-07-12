@@ -52,6 +52,10 @@ public class TestMyTrieSet {
         for (String s: otherStrings) {
             assertFalse(keys.contains(s));
         }
+        for(String k : keys) {
+            System.out.println(k);
+        }
+
     }
 
     public static void main(String[] args) {

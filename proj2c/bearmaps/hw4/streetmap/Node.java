@@ -12,6 +12,7 @@ public class Node {
 
     private String name;
 
+
     private Node(long id, double lat, double lon) {
         this.id = id;
         this.lat = lat;
@@ -25,6 +26,8 @@ public class Node {
     public long id() {
         return id;
     }
+
+
 
     public double lat() {
         return lat;

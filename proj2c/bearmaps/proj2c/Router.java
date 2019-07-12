@@ -1,5 +1,9 @@
 package bearmaps.proj2c;
 
+import bearmaps.hw4.AStarSolver;
+import bearmaps.hw4.WeirdSolver;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -24,10 +28,9 @@ public class Router {
      */
     public static List<Long> shortestPath(AugmentedStreetMapGraph g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        //long src = g.closest(stlon, stlat);
-        //long dest = g.closest(destlon, destlat);
-        //return new WeirdSolver<>(g, src, dest, 20).solution();
-        return null;
+        long src = g.closest(stlon, stlat);
+        long dest = g.closest(destlon, destlat);
+        return new WeirdSolver<>(g, src, dest, 20).solution();
     }
 
     /**
@@ -39,9 +42,59 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(AugmentedStreetMapGraph g, List<Long> route) {
-        /* fill in for part IV */
+        /* fill in for part IV
+        Flora's problem: cannot get the Way name of a vertex
+
+        List<NavigationDirection> routeDirections = new LinkedList<>();
+
+        double sum = 0;
+        int start = 0;
+        int Direction = 0;
+        String name = g.name(route.get(start));  // ???????????????? this is the name of a vertex, not the name of the way
+        while (name == null) {
+            start += 1;
+            name = g.wayName(route.get(start));
+        }
+
+        NavigationDirection newND = new NavigationDirection();
+
+        for (int i = 1 + start; i < route.size() - 1; i++) {
+            String curName = g.wayName(route.get(i));
+            while (curName == null) {
+                i += 1;
+                curName =  g.wayName(route.get(i));
+            }
+            if (name.equals(curName)) {  // in the same way
+                sum = sum + g.estimatedDistanceToGoal(route.get(i - 1), route.get(i));
+            } else {
+                newND.direction = Direction;
+                newND.way = name;
+                newND.distance = sum;
+                routeDirections.add(newND);
+                System.out.println("** add one way!");
+                // start counting a new way
+                newND = new NavigationDirection();
+                sum = 0;
+                double b1 = NavigationDirection.bearing(g.lon(route.get(i - 2)), g.lon(route.get(i - 1)), g.lat(route.get(i - 2)), g.lat(route.get(i - 1)));
+                double b2 = NavigationDirection.bearing(g.lon(route.get(i)), g.lon(route.get(i + 1)), g.lat(route.get(i)), g.lat(route.get(i + 1)));
+                Direction = NavigationDirection.getDirection(b1, b2);
+                name = curName;
+            }
+        }
+        // the last one
+        int last = route.size() - 1;
+        sum = sum + g.estimatedDistanceToGoal(route.get(last - 1), route.get(last));
+        newND.direction = Direction;
+        newND.way = name;
+        newND.distance = sum;
+        routeDirections.add(newND);
+
+        return routeDirections;
+
+         */
         return null;
     }
+
 
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:
@@ -162,7 +215,7 @@ public class Router {
          * @param currBearing A double in [0, 360.0]
          * @return the Navigation Direction type
          */
-        private static int getDirection(double prevBearing, double currBearing) {
+        public static int getDirection(double prevBearing, double currBearing) {
             double absDiff = Math.abs(currBearing - prevBearing);
             if (numInRange(absDiff, 0.0, 15.0)) {
                 return NavigationDirection.STRAIGHT;

@@ -191,6 +191,15 @@ public class StreetMapGraph implements AStarGraph<Long> {
         return 3963 * c;
     }
 
+    /* @Flora's fail try
+    public String wayName(Long v) {
+        if (!nodes.containsKey(v)) {
+            return null;
+        }
+        return nodes.get(v).wayName();
+    }
+
+     */
     /**
      * Gets the longitude of a vertex.
      * @param v The id of the vertex.

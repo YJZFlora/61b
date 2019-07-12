@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bearmaps.proj2c.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2c.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,13 +83,100 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
+
+        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
+
+        double lrlon = requestParams.get("lrlon");
+        double ullon = requestParams.get("ullon");
+        double ullat = requestParams.get("ullat");
+        double lrlat = requestParams.get("lrlat");
+        double w = requestParams.get("w");
+        boolean query_success = true;
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+
+        // query box for a location that is completely outside of the root longitude/latitudes
+        if (lrlon < ROOT_ULLON || lrlat > ROOT_ULLAT) {
+            return queryFail();
+        }
+
+        // eg: d7_x84_y28 ... d7_x86_y28  depth: 7, startX: 84, endX: 86; startY: 28
+        double queryLonDPP = (lrlon - ullon) / w;
+        double rootLonDPP = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
+        int depth = findDepth(queryLonDPP, rootLonDPP);
+        int startX = findX(depth, ullon);
+        int endX = findX(depth, lrlon);
+        int startY = findY(depth, ullat);
+        int endY = findY(depth, lrlat);
+        double raster_ul_lon = getLon(depth, startX);
+        double raster_lr_lon = getLon(depth, endX + 1);
+        double raster_ul_lat = getLat(depth, startY);
+        double raster_lr_lat = getLat(depth, endY + 1);
+        String[][] render_grid = makeGrid(depth, startX, endX, startY, endY);
+
+        results.put("raster_ul_lon", raster_ul_lon);
+        results.put("depth", depth);
+        results.put("raster_lr_lon", raster_lr_lon);
+        results.put("raster_lr_lat", raster_lr_lat);
+        results.put("raster_ul_lat", raster_ul_lat);
+        results.put("query_success", query_success);
+        results.put("render_grid", render_grid);
+
         return results;
     }
+
+    // Have the greatest LonDPP that is less than or equal to the LonDPP of the query box.
+    private int findDepth(double queryLonDPP, double depthLonDPP) {
+        for (int i = 0; i < 8; i++) {
+            if (depthLonDPP <= queryLonDPP) {
+                return i;
+            }
+            depthLonDPP /= 2.0;
+        }
+        return 7;
+    }
+
+    // find the bounding x of depth D
+    private int findX(int D, double x) {
+        double Length_perBox = (ROOT_LRLON - ROOT_ULLON) / (Math.pow(2, D));
+        double a = (x - ROOT_ULLON) / Length_perBox;
+        return (int) Math.floor(a);
+    }
+
+    // find the bounding y of depth D
+    private int findY(int D, double y) {
+        double Length_perBox = (ROOT_ULLAT - ROOT_LRLAT) / (Math.pow(2, D));
+        double a = (ROOT_ULLAT - y) / Length_perBox;
+        return (int) Math.floor(a);
+    }
+
+    // get longtitute of the i th certain box in depth D
+    private double getLon(int D, int i) {
+        double Length_perBox = (ROOT_LRLON - ROOT_ULLON) / (Math.pow(2, D));
+        double lon = ROOT_ULLON + i * Length_perBox;
+        return lon;
+    }
+
+    // get latitute of the i th certain box in depth D
+    private double getLat(int D, int i) {
+        double Length_perBox = (ROOT_ULLAT - ROOT_LRLAT) / (Math.pow(2, D));
+        double lat = ROOT_ULLAT - i * Length_perBox;
+        return lat;
+    }
+
+    private String[][] makeGrid(int depth, int startX, int endX, int startY, int endY) {
+        int row = endY - startY + 1;
+        int col = endX - startX + 1;
+        String[][] render_grid  = new String[row][col];
+        for (int j = startY; j <= endY; j++) {
+            for (int i = startX; i <= endX; i++) {
+                String name = "d" + depth + "_x" + i + "_y" + j + ".png";
+                render_grid[j - startY][i - startX] = name;
+            }
+        }
+        return render_grid;
+    }
+
 
     @Override
     protected Object buildJsonResponse(Map<String, Object> result) {
