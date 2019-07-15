@@ -97,7 +97,7 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
 
         // query box for a location that is completely outside of the root longitude/latitudes
         if (lrlon < ROOT_ULLON || lrlat > ROOT_ULLAT) {
-            return queryFail();
+            query_success = false;
         }
 
         // eg: d7_x84_y28 ... d7_x86_y28  depth: 7, startX: 84, endX: 86; startY: 28
@@ -139,15 +139,29 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
     // find the bounding x of depth D
     private int findX(int D, double x) {
         double Length_perBox = (ROOT_LRLON - ROOT_ULLON) / (Math.pow(2, D));
-        double a = (x - ROOT_ULLON) / Length_perBox;
-        return (int) Math.floor(a);
+        double a =(x - ROOT_ULLON) / Length_perBox;
+        int number = (int) Math.floor(a);
+        if (number > (int) (Math.pow(2, D) - 1)) {
+            number = (int) Math.pow(2, D) - 1;
+        }
+        if (number < 0) {
+            number = 0;
+        }
+        return number;
     }
 
     // find the bounding y of depth D
     private int findY(int D, double y) {
         double Length_perBox = (ROOT_ULLAT - ROOT_LRLAT) / (Math.pow(2, D));
         double a = (ROOT_ULLAT - y) / Length_perBox;
-        return (int) Math.floor(a);
+        int number = (int) Math.floor(a);
+        if (number > (int) (Math.pow(2, D) - 1)) {
+            number = (int) Math.pow(2, D) - 1;
+        }
+        if (number < 0) {
+            number = 0;
+        }
+        return number;
     }
 
     // get longtitute of the i th certain box in depth D
@@ -291,8 +305,9 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         BufferedImage tileImg = null;
         if (tileImg == null) {
             try {
-                File in = new File(imgPath);
-                tileImg = ImageIO.read(in);
+                // File in = new File(imgPath);
+                // tileImg = ImageIO.read(in);
+                tileImg = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource(imgPath));
             } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
             }
